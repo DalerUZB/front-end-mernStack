@@ -17,27 +17,28 @@ export const FullPost = () => {
 
   const [onePosts, setOnePosts] = useState([]);
 
-  const [isLoading, setIsloading] = useState(true);
+  const [isLoading, setIsloading] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`/posts/${id}`)
-      .then(({ data }) => {
+    try {
+      axios.get(`/posts/${id}`).then(({ data }) => {
         setOnePosts(data);
         setIsloading(false);
-      })
-      .catch((err) => {
-        console.warn(err);
-        alert("ощибка при получении статьи");
       });
+    } catch (error) {
+      console.warn(error);
+      alert("ощибка при получении статьи  ");
+    }
   }, []);
-
   if (isLoading) {
     return <Post isLoading={isLoading} isFullPost />;
   }
+
+  console.log(onePosts);
+
   return (
     <>
-      <Post
+      {/* <Post
         id={onePosts._id}
         title={onePosts.title}
         imageUrl={
@@ -60,7 +61,7 @@ export const FullPost = () => {
 
       <CommentsBlock items={[onePosts]} isLoading={false}>
         <Index />
-      </CommentsBlock>
+      </CommentsBlock> */}
     </>
   );
 };

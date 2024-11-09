@@ -30,15 +30,16 @@ export const AddPost = () => {
   const onClickRemoveImage = () => {
     setImageUrl("");
   };
-  const isEditing = Boolean(id);
 
+  const isEditing = Boolean(id);
+  console.log(imageUrl);
   const handleChangeFile = async (event) => {
     try {
       const formData = new FormData();
       const file = event.target.files[0];
       formData.append("postFile", file);
       const { data } = await axios.post("/upload", formData);
-      setImageUrl(data.url);
+      setImageUrl(data.postFileUrl);
     } catch (error) {
       console.log(error);
       alert("ошибка при загрузке файла!");
@@ -132,15 +133,11 @@ export const AddPost = () => {
           <Button
             variant="contained"
             color="error"
-            onClick={onClickRemoveImage}
+            onClick={() => onClickRemoveImage()}
           >
             Удалить
           </Button>
-          <img
-            className={styles.image}
-            src={`http://localhost:1010/${imageUrl}`}
-            alt="Uploaded"
-          />
+          <img className={styles.image} src={`http://localhost:1010/${imageUrl}`} alt="Uploaded" />
         </>
       )}
 

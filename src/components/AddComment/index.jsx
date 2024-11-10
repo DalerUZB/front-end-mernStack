@@ -27,6 +27,8 @@ export const Index = () => {
       text: value,
     };
 
+    console.log(obj);
+
     await axios.patch(`/posts/${id}/comment`, obj).then((response) => {
       if (response.data.message) {
         toast.success(`message sending`, {

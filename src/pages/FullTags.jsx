@@ -5,21 +5,42 @@ import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { ForTagsComponent } from "../components/ForTagsComponent";
 
-const   FullTags = ({ isLoading }) => {
-  const { name } = useParams("name");
-
+const FullTags = ({ isLoading }) => {
+  const { name } = useParams();
   const [datas, setDatas] = useState([]);
-  const dataArr = [];
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const data = async () => {
-    const { data } = await axios.get("/posts");
-    setDatas(data);
+    try {
+      const { data } = await axios.get("/posts");
+      setDatas(data);
+    } catch (err) {
+      setError("Ma'lumotni olishda xatolik yuz berdi");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     data();
   }, []);
+
   const filteredData = datas.filter((item) => item.tags.includes(name));
-  console.log(filteredData);
+
+  if (loading) {
+    return <p>...Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (filteredData.length === 0) {
+    return <p>No tag with this name was found</p>;
+  }
+
   return (
     <>
       {filteredData.map((obj) => (
@@ -32,7 +53,7 @@ const   FullTags = ({ isLoading }) => {
             avatarUrl:
               `http://localhost:1010/${obj.user?.avatarUrl}` ||
               "https://static-00.iconduck.com/assets.00/no-image-icon-512x512-lfoanl0w.png",
-            fullName: obj.user?.fullName || "daler",
+            fullName: obj.user?.fullName || "?",
           }}
           createdAt={obj.createdAt}
           viewsCount={obj.viewsCount}
@@ -41,10 +62,7 @@ const   FullTags = ({ isLoading }) => {
           isFullPost
         >
           <ReactMarkdown children={obj.text || ""} />
-          <ForTagsComponent
-            items={obj.comments}
-            isLoading={isLoading ? true : false}
-          >
+          <ForTagsComponent items={obj.comments} isLoading={isLoading}>
             <Index />
           </ForTagsComponent>
         </Post>

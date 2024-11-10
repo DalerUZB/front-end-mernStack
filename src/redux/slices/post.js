@@ -70,7 +70,6 @@
 
 // export default postUser.reducer;
 
-
 import axios from "../../axios/axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -80,7 +79,7 @@ export const fetchPosts = createAsyncThunk("posts", async () => {
   return response;
 });
 export const fetchTags = createAsyncThunk("tags", async () => {
-  const response = await axios.get("/tags");
+  const response = await axios.get("/posts/tags");
   return response;
 });
 export const fetchPostDelete = createAsyncThunk(
@@ -128,6 +127,7 @@ export const postUser = createSlice({
         state.tags.status = "loading";
       })
       .addCase(fetchTags.fulfilled, (state, { payload }) => {
+        console.log(payload, "payload");
         state.tags.items = payload.data;
         state.tags.status = "loaded";
       })

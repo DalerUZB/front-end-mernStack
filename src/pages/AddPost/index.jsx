@@ -137,7 +137,11 @@ export const AddPost = () => {
           >
             Удалить
           </Button>
-          <img className={styles.image} src={`http://localhost:1010/${imageUrl}`} alt="Uploaded" />
+          <img
+            className={styles.image}
+            src={`http://localhost:1010/${imageUrl}`}
+            alt="Uploaded"
+          />
         </>
       )}
 

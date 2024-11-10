@@ -17,7 +17,7 @@ export const FullPost = () => {
 
   const [onePosts, setOnePosts] = useState([]);
 
-  const [isLoading, setIsloading] = useState(false);
+  const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
     try {
@@ -38,30 +38,34 @@ export const FullPost = () => {
 
   return (
     <>
-      {/* <Post
-        id={onePosts._id}
-        title={onePosts.title}
-        imageUrl={
-          onePosts.imageUrl && `http://localhost:1010/${onePosts?.imageUrl}`
-        }
-        user={
-          onePosts.user !== null && {
-            avatarUrl: `http://localhost:1010/${onePosts?.user?.avatarUrl}`,
-            fullName: onePosts.user.fullName,
-          }
-        }
-        createdAt={moment(onePosts.createdAt).endOf("day").fromNow()}
-        viewsCount={onePosts.viewsCount}
-        commentsCount={onePosts.comments.length}
-        tags={onePosts.tags !== undefined ? onePosts.tags : []}
-        isFullPost
-      >
-        <ReactMarkdown children={onePosts.text} />
-      </Post>
+      {isLoading ? (
+        <div>... Loading</div>
+      ) : (
+        <>
+          <Post
+            id={onePosts._id}
+            title={onePosts.title}
+            imageUrl={
+              onePosts.imageUrl && `http://localhost:1010/${onePosts?.imageUrl}`
+            }
+            user={{
+              avatarUrl: `http://localhost:1010/${onePosts?.user?.avatarUrl}`,
+              fullName: onePosts.user?.fullName,
+            }}
+            createdAt={moment(onePosts.createdAt).endOf("day").fromNow()}
+            viewsCount={onePosts.viewsCount}
+            commentsCount={onePosts.comments?.length}
+            tags={onePosts.tags}
+            isFullPost
+          >
+            <ReactMarkdown children={onePosts.text} />
+          </Post>
 
-      <CommentsBlock items={[onePosts]} isLoading={false}>
-        <Index />
-      </CommentsBlock> */}
+          <CommentsBlock items={[onePosts]} isLoading={false}>
+            <Index />
+          </CommentsBlock>
+        </>
+      )}
     </>
   );
 };

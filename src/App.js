@@ -25,6 +25,7 @@ function App() {
           <Route path="/posts/:id/edit" element={<AddPost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
+          <Route path="*" element={<h1>Not Found 404</h1>} />
         </Routes>
       </Container>
     </>

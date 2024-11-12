@@ -32,7 +32,6 @@ export const AddPost = () => {
   };
 
   const isEditing = Boolean(id);
-  console.log(imageUrl);
   const handleChangeFile = async (event) => {
     try {
       const formData = new FormData();

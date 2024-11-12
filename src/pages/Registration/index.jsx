@@ -60,10 +60,8 @@ export const Registration = () => {
           password: data.password,
           avatarUrl: imageUrl,
         };
-        console.log(value);
 
         const response = await dispatch(fetchRegister(value));
-        console.log(response);
 
         if (response.payload.token) {
           window.localStorage.setItem("token", response.payload.token);

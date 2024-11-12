@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -12,29 +12,36 @@ import { SideBlock } from "./SideBlock";
 import { Link } from "react-router-dom";
 
 export const TagsBlock = ({ items, isLoading = true }) => {
+  if (items.length > 0) {
+    isLoading = false;
+  }
   return (
     <SideBlock title="Тэги">
       <List>
-        {(isLoading ? [...Array(5)] : items).map((name, i) => (
-          <Link
-            key={i}
-            style={{ textDecoration: "none", color: "black" }}
-            to={`/tags/${name}`}
-          >
-            <ListItem key={i} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <TagIcon />
-                </ListItemIcon>
-                {isLoading ? (
-                  <Skeleton width={100} />
-                ) : (
-                  <ListItemText primary={name} />
-                )}
-              </ListItemButton>
-            </ListItem>
-          </Link>
-        ))}
+        {items.length > 0 ? (
+          items.map((name, i) => (
+            <Link
+              key={i}
+              style={{ textDecoration: "none", color: "black" }}
+              to={`/tags/${name.tags}`}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <TagIcon />
+                  </ListItemIcon>
+                  {isLoading ? (
+                    <Skeleton width="100%" height={40} />
+                  ) : (
+                    <ListItemText primary={name.tags} />
+                  )}
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ))
+        ) : (
+          <p>No tags available</p>
+        )}
       </List>
     </SideBlock>
   );

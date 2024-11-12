@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { ForTagsComponent } from "../components/ForTagsComponent";
 
-const FullTags = ({ isLoading }) => {
+const FullTags = () => {
   const { name } = useParams();
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,11 +22,9 @@ const FullTags = ({ isLoading }) => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     data();
   }, []);
-
   const filteredData = datas.filter((item) => item.tags.includes(name));
 
   if (loading) {
@@ -43,7 +41,7 @@ const FullTags = ({ isLoading }) => {
 
   return (
     <>
-      {filteredData.map((obj) => (
+      {filteredData?.map((obj) => (
         <Post
           key={obj.id}
           id={obj.id}
@@ -62,7 +60,7 @@ const FullTags = ({ isLoading }) => {
           isFullPost
         >
           <ReactMarkdown children={obj.text || ""} />
-          <ForTagsComponent items={obj.comments} isLoading={isLoading}>
+          <ForTagsComponent items={obj.comments} isLoading={false}>
             <Index />
           </ForTagsComponent>
         </Post>

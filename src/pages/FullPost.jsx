@@ -34,8 +34,6 @@ export const FullPost = () => {
     return <Post isLoading={isLoading} isFullPost />;
   }
 
-  console.log(onePosts);
-
   return (
     <>
       {isLoading ? (

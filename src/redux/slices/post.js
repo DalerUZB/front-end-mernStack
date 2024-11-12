@@ -79,7 +79,7 @@ export const fetchPosts = createAsyncThunk("posts", async () => {
   return response;
 });
 export const fetchTags = createAsyncThunk("tags", async () => {
-  const response = await axios.get("/posts/tags");
+  const response = await axios.get("/tags");
   return response;
 });
 export const fetchPostDelete = createAsyncThunk(
@@ -127,7 +127,6 @@ export const postUser = createSlice({
         state.tags.status = "loading";
       })
       .addCase(fetchTags.fulfilled, (state, { payload }) => {
-        console.log(payload, "payload");
         state.tags.items = payload.data;
         state.tags.status = "loaded";
       })

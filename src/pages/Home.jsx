@@ -1,100 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import Tabs from "@mui/material/Tabs";
-// import Tab from "@mui/material/Tab";
-// import Grid from "@mui/material/Grid";
-// import moment from "moment";
-
-// import { Post } from "../components/Post";
-// import { TagsBlock } from "../components/TagsBlock";
-// import { useDispatch, useSelector } from "react-redux";
-// import { fetchPosts, fetchTags } from "../redux/slices/post";
-
-// export const Home = () => {
-//   const dispatch = useDispatch();
-//   const userData = useSelector((state) => state.auth.data);
-//   const { posts, tags } = useSelector((data) => data.post);
-
-//   const [items, setItems] = useState([]);
-//   const [value, setValue] = useState(1);
-
-//   const isPostsLoading = posts.status === "loading";
-//   const isTagsLoading = tags.status === "loading";
-
-//   useEffect(() => {
-//     dispatch(fetchPosts());
-//     dispatch(fetchTags());
-//   }, [dispatch]);
-
-//   useEffect(() => {
-//     if (posts.items) {
-//       setItems(posts.items);
-//     }
-//   }, [posts]);
-
-//   // Sorting functions
-//   const sortByDate = () => {
-//     const sortedItems = [...items].sort(
-//       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-//     );
-//     setItems(sortedItems);
-//     setValue(0);
-//   };
-
-//   const sortByPopularity = () => {
-//     const sortedItems = [...items].sort((a, b) => b.viewsCount - a.viewsCount);
-//     setItems(sortedItems);
-//     setValue(1);
-//   };
-
-//   return (
-//     <>
-//       <Tabs style={{ marginBottom: 15 }} value={value} aria-label="sort tabs">
-//         <Tab label="Новые" onClick={sortByDate} />
-//         <Tab label="Популярные" onClick={sortByPopularity} />
-//       </Tabs>
-
-//       <Grid container spacing={4}>
-//         {/* Posts section */}
-//         <Grid item xs={8}>
-//           {isPostsLoading ? (
-//             <Post isLoading={true} />
-//           ) : items?.length ? (
-//             items.map((obj) => (
-//               <Post
-//                 key={obj._id}
-//                 id={obj._id}
-//                 title={obj.title}
-//                 imageUrl={`http://localhost:1010/${obj.imageUrl}`}
-//                 user={
-//                   obj.user
-//                     ? {
-//                         avatarUrl: `http://localhost:1010/${obj.user.avatarUrl}`,
-//                         fullName: obj.user?.fullName,
-//                       }
-//                     : {}
-//                 }
-//                 createdAt={moment(obj.createdAt).format("LLLL")}
-//                 viewsCount={obj.viewsCount}
-//                 commentsCount={obj.comments.length}
-//                 comments={obj.comments}
-//                 tags={obj.tags}
-//                 isEditable={userData && obj.user?._id === userData._id}
-//               />
-//             ))
-//           ) : (
-//             <div>No posts available</div>
-//           )}
-//         </Grid>
-
-//         <Grid item xs={4}>
-//           {/* <TagsBlock items={tags.items || []} isLoading={isTagsLoading} /> */}
-//           <TagsBlock items={[tags.items]} isLoading={isTagsLoading} />
-//         </Grid>
-//       </Grid>
-//     </>
-//   );
-// };
-
 import React, { useEffect, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -104,6 +7,8 @@ import { TagsBlock } from "../components/TagsBlock";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts, fetchTags } from "../redux/slices/post";
 import { CircularProgress } from "@mui/material";
+import { CommentsBlock } from "../components";
+import FindComment from "../components/FindComment";
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -168,7 +73,7 @@ export const Home = () => {
                   obj.user
                     ? {
                         avatarUrl: `http://localhost:1010/${obj.user.avatarUrl}`,
-                        fullName: obj.user.fullName,
+                        fullName: obj.user?.fullName,
                       }
                     : {}
                 }
@@ -180,7 +85,7 @@ export const Home = () => {
                   minute: "2-digit",
                 }).format(new Date(obj.createdAt))}
                 viewsCount={obj.viewsCount}
-                commentsCount={obj.comments.length}
+                commentsCount={obj.comments?.length}
                 comments={obj.comments}
                 tags={obj.tags}
                 isEditable={userData && obj.user?._id === userData._id}
@@ -195,8 +100,28 @@ export const Home = () => {
           {isTagsLoading ? (
             <CircularProgress />
           ) : (
-            <TagsBlock items={tags.items || []} />
+            <TagsBlock items={tags.items} />
           )}
+          {/* <CommentsBlock
+            items={[
+              {
+                user: {
+                  fullName: "Вася Пупкин",
+                  avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
+                },
+                text: "Это тестовый комментарий",
+              },
+              {
+                user: {
+                  fullName: "Иван Иванов",
+                  avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
+                },
+                text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
+              },
+            ]}
+            isLoading={false}
+          /> */}
+          <FindComment />
         </Grid>
       </Grid>
     </>

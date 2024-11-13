@@ -1,8 +1,19 @@
 import React from "react";
 
-const FindComment = (props) => {
-  console.log(props.item);
-  return <div>daler</div>;
+const FindComment = ({ LastComments, isCommentLoading }) => {
+  console.log(LastComments);
+  return (
+    <div>
+      {LastComments.map((ren) => {
+        return (
+          <div>
+            <h3>{ren.fullName}</h3>
+            <p>{ren.text}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 export default FindComment;

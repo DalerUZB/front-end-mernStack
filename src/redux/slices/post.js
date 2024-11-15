@@ -18,24 +18,12 @@ export const fetchPostDelete = createAsyncThunk(
   }
 );
 
-export const fetchLastComment = createAsyncThunk(
-  "fetchLastComment",
-  async () => {
-    const response = await axios.get("/comment");
-    return response;
-  }
-);
-
 const initialState = {
   posts: {
     items: [],
     status: "loading",
   },
   tags: {
-    items: [],
-    status: "loading",
-  },
-  comments: {
     items: [],
     status: "loading",
   },
@@ -74,18 +62,7 @@ export const postUser = createSlice({
         state.tags.items = [];
         state.tags.status = "error";
       });
-    // fetch Comments
-    builder
-      .addCase(fetchLastComment.pending, (state) => {
-        state.comments.status = "loading";
-      })
-      .addCase(fetchLastComment.fulfilled, (state, { payload }) => {
-        state.comments.items = payload.data;
-        state.comments.status = "loaded";
-      })
-      .addCase(fetchLastComment.rejected, (state) => {
-        state.comments.status = "loading";
-      });
+
     // Fetch post delete
     builder.addCase(fetchPostDelete.pending, (state, action) => {
       state.posts.items = state.posts.items.filter(

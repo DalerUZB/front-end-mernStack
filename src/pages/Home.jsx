@@ -5,10 +5,8 @@ import Grid from "@mui/material/Grid";
 import { Post } from "../components/Post";
 import { TagsBlock } from "../components/TagsBlock";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchLastComment, fetchPosts, fetchTags } from "../redux/slices/post";
+import { fetchPosts, fetchTags } from "../redux/slices/post";
 import { CircularProgress } from "@mui/material";
-import { CommentsBlock } from "../components";
-import FindComment from "../components/FindComment";
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -16,21 +14,17 @@ export const Home = () => {
   const { posts, tags, comments } = useSelector((state) => state.post);
 
   const [items, setItems] = useState([]);
-  const [LastComments, setLastComments] = useState([]);
   const [value, setValue] = useState(0);
 
   const isPostsLoading = posts.status === "loading";
   const isTagsLoading = tags.status === "loading";
-  const isCommentLoading = comments.status === "loading";
 
   useEffect(() => {
     dispatch(fetchPosts());
     dispatch(fetchTags());
-    dispatch(fetchLastComment());
   }, [dispatch]);
   useEffect(() => {
     if (posts.items) setItems(posts.items);
-    if (comments.items) setLastComments(comments.items);
   }, [posts]);
 
   const sortByDate = () => {
@@ -46,8 +40,7 @@ export const Home = () => {
     setItems(sortedItems);
     setValue(1);
   };
-  console.log(LastComments);
-  return (
+return (
     <>
       <Tabs
         value={value}
@@ -105,8 +98,6 @@ export const Home = () => {
           ) : (
             <TagsBlock items={tags.items} />
           )}
-
-          <FindComment LastComments={LastComments} isCommentLoading />
         </Grid>
       </Grid>
     </>

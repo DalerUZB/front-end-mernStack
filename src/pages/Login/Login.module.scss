@@ -14,3 +14,25 @@
   font-weight: bold !important;
   margin-bottom: 30px !important;
 }
+
+@media only screen and (max-width: 430px) {
+  .root {
+    width: 90%;
+    padding: 30px;
+    margin: 20px auto;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .field {
+    margin-bottom: 15px !important;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 12px 0;
+  }
+}

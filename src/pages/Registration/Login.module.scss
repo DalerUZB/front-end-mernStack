@@ -1,3 +1,74 @@
+// .root {
+//   width: 400px;
+//   padding: 50px;
+//   border: 1px solid #dedede;
+//   margin: 50px auto;
+// }
+
+// .field {
+//   margin-bottom: 20px !important;
+// }
+
+// .title {
+//   text-align: center !important;
+//   font-weight: bold !important;
+//   margin-bottom: 30px !important;
+// }
+
+// .avatar {
+//   display: flex;
+//   justify-content: center;
+//   margin-bottom: 30px;
+// }
+
+// .root {
+//   width: 400px;
+//   padding: 50px;
+//   border: 1px solid #dedede;
+//   margin: 50px auto;
+// }
+
+// .field {
+//   margin-bottom: 20px !important;
+// }
+
+// .title {
+//   text-align: center !important;
+//   font-weight: bold !important;
+//   margin-bottom: 30px !important;
+// }
+
+// .avatar {
+//   display: flex;
+//   justify-content: center;
+//   margin-bottom: 30px;
+// }
+
+// @media only screen and (max-width: 430px) {
+//   .root {
+//     width: 90%;
+//     padding: 30px;
+//     margin: 20px auto;
+//   }
+
+//   .title {
+//     font-size: 20px;
+//     margin-bottom: 20px;
+//   }
+
+//   .avatar {
+//     margin-bottom: 20px;
+//   }
+
+//   .field {
+//     margin-bottom: 15px !important;
+//   }
+
+//   button {
+//     font-size: 14px;
+//     padding: 12px 0;
+//   }
+// }
 .root {
   width: 400px;
   padding: 50px;
@@ -19,4 +90,53 @@
   display: flex;
   justify-content: center;
   margin-bottom: 30px;
+}
+
+.uploadBtn {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.uploadLabel {
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4361ee;
+  color: white;
+  border-radius: 5px;
+  font-weight: 600;
+  text-align: center;
+  width: auto;
+  font-size: 14px;
+}
+
+.uploadLabel:hover {
+  background-color: #3b5bbf;
+}
+
+@media only screen and (max-width: 430px) {
+  .root {
+    width: 90%;
+    padding: 30px;
+    margin: 20px auto;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .avatar {
+    margin-bottom: 20px;
+  }
+
+  .field {
+    margin-bottom: 15px !important;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 12px 0;
+  }
 }

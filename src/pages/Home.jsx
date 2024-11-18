@@ -40,7 +40,8 @@ export const Home = () => {
     setItems(sortedItems);
     setValue(1);
   };
-return (
+  console.log(procces);
+  return (
     <>
       <Tabs
         value={value}

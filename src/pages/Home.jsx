@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box"; // MUI Box
 import { Post } from "../components/Post";
 import { TagsBlock } from "../components/TagsBlock";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,10 +12,10 @@ import { CircularProgress } from "@mui/material";
 export const Home = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.data);
-  const { posts, tags, comments } = useSelector((state) => state.post);
+  const { posts, tags } = useSelector((state) => state.post);
 
   const [items, setItems] = useState([]);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
 
   const isPostsLoading = posts.status === "loading";
   const isTagsLoading = tags.status === "loading";
@@ -23,6 +24,7 @@ export const Home = () => {
     dispatch(fetchPosts());
     dispatch(fetchTags());
   }, [dispatch]);
+
   useEffect(() => {
     if (posts.items) setItems(posts.items);
   }, [posts]);
@@ -40,7 +42,7 @@ export const Home = () => {
     setItems(sortedItems);
     setValue(1);
   };
-  console.log(procces);
+
   return (
     <>
       <Tabs
@@ -59,37 +61,55 @@ export const Home = () => {
             <div style={{ textAlign: "center", width: "100%" }}>
               <CircularProgress />
             </div>
-          ) : items.length ? (
-            items.map((obj) => (
-              <Post
-                key={obj._id}
-                id={obj._id}
-                title={obj.title}
-                imageUrl={`http://localhost:1010/${obj.imageUrl}`}
-                user={
-                  obj.user
-                    ? {
-                        avatarUrl: `http://localhost:1010/${obj.user.avatarUrl}`,
-                        fullName: obj.user?.fullName,
-                      }
-                    : {}
-                }
-                createdAt={new Intl.DateTimeFormat("ru-RU", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                }).format(new Date(obj.createdAt))}
-                viewsCount={obj.viewsCount}
-                commentsCount={obj.comments?.length}
-                comments={obj.comments}
-                tags={obj.tags}
-                isEditable={userData && obj.user?._id === userData._id}
-              />
-            ))
           ) : (
-            <div>No posts available</div>
+            <Box
+              sx={{
+                maxHeight: "70vh", // Container height to make it scrollable
+                overflowY: "auto", // Vertical scroll
+                paddingRight: "10px", // Space for scrollbar
+                borderRadius: "8px", // Rounded corners
+                backgroundColor: "#f9f9f9", // Light background for container
+                "&::-webkit-scrollbar": {
+                  width: "6px", // Slim scrollbar width
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "#4361ee", // Thumb color
+                  borderRadius: "5px", // Rounded thumb
+                },
+                "&::-webkit-scrollbar-track": {
+                  backgroundColor: "#f1f1f1", // Track color
+                },
+              }}
+            >
+              {items.map((obj) => (
+                <Post
+                  key={obj._id}
+                  id={obj._id}
+                  title={obj.title}
+                  imageUrl={`${process.env.REACT_APP_URL}/${obj.imageUrl}`}
+                  user={
+                    obj.user
+                      ? {
+                          avatarUrl: `${process.env.REACT_APP_URL}/${obj.user.avatarUrl}`,
+                          fullName: obj.user?.fullName,
+                        }
+                      : {}
+                  }
+                  createdAt={new Intl.DateTimeFormat("ru-RU", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }).format(new Date(obj.createdAt))}
+                  viewsCount={obj.viewsCount}
+                  commentsCount={obj.comments?.length}
+                  comments={obj.comments}
+                  tags={obj.tags}
+                  isEditable={userData && obj.user?._id === userData._id}
+                />
+              ))}
+            </Box>
           )}
         </Grid>
 

@@ -44,10 +44,11 @@ export const FullPost = () => {
             id={onePosts._id}
             title={onePosts.title}
             imageUrl={
-              onePosts.imageUrl && `http://localhost:1010/${onePosts?.imageUrl}`
+              onePosts.imageUrl &&
+              `${process.env.REACT_APP_URL}/${onePosts?.imageUrl}`
             }
             user={{
-              avatarUrl: `http://localhost:1010/${onePosts?.user?.avatarUrl}`,
+              avatarUrl: `${process.env.REACT_APP_URL}/${onePosts?.user?.avatarUrl}`,
               fullName: onePosts.user?.fullName,
             }}
             createdAt={moment(onePosts.createdAt).endOf("day").fromNow()}

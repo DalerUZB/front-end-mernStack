@@ -38,7 +38,6 @@ const FullTags = () => {
   if (filteredData.length === 0) {
     return <p>No tag with this name was found</p>;
   }
-
   return (
     <>
       {filteredData?.map((obj) => (
@@ -46,10 +45,10 @@ const FullTags = () => {
           key={obj.id}
           id={obj.id}
           title={obj.title}
-          imageUrl={`http://localhost:1010/${obj.imageUrl}` || ""}
+          imageUrl={`${process.env.REACT_APP_URL}/${obj.imageUrl}` || ""}
           user={{
             avatarUrl:
-              `http://localhost:1010/${obj.user?.avatarUrl}` ||
+              `${process.env.REACT_APP_URL}/${obj.user?.avatarUrl}` ||
               "https://static-00.iconduck.com/assets.00/no-image-icon-512x512-lfoanl0w.png",
             fullName: obj.user?.fullName || "?",
           }}

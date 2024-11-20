@@ -55,7 +55,7 @@ export const Index = () => {
           <Avatar
             classes={{ root: styles.avatar }}
             src={
-              `http://localhost:1010/${authOptions.avatarUrl}` ||
+              `${process.env.REACT_APP_URL}/${authOptions.avatarUrl}` ||
               "https://static-00.iconduck.com/assets.00/no-image-icon-512x512-lfoanl0w.png"
             }
           />

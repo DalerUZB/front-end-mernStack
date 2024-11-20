@@ -22,7 +22,7 @@ export const CommentsBlock = ({ items, children, isLoading = true }) => {
                 ) : (
                   <Avatar
                     alt={obj.avatarUrl}
-                    src={`http://localhost:1010/${obj.avatarUrl}`}
+                    src={`${process.env.REACT_APP_URL}/${obj.avatarUrl}`}
                   />
                 )}
               </ListItemAvatar>

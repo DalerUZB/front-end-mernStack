@@ -16,7 +16,7 @@ const FullTags = () => {
       const { data } = await axios.get("/posts");
       setDatas(data);
     } catch (err) {
-      setError("Ma'lumotni olishda xatolik yuz berdi");
+      setError("Произошла ошибка при получении статьи");
       console.error(err);
     } finally {
       setLoading(false);

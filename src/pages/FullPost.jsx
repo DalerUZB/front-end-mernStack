@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { Post } from "../components/Post";
 import { Index } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
@@ -9,6 +8,15 @@ import axios from "../axios/axios";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 
+// Import MUI components
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Typography,
+  Grid,
+} from "@mui/material";
+
 export const FullPost = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.data);
@@ -16,7 +24,6 @@ export const FullPost = () => {
   const { id } = useParams();
 
   const [onePosts, setOnePosts] = useState([]);
-
   const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
@@ -27,44 +34,66 @@ export const FullPost = () => {
       });
     } catch (error) {
       console.warn(error);
-      alert("ощибка при получении статьи  ");
+      alert("Произошла ошибка при получении статьи.");
     }
-  }, []);
+  }, [id]);
+
   if (isLoading) {
-    return <Post isLoading={isLoading} isFullPost />;
+    return (
+      <Box
+        sx={{ display: "flex", justifyContent: "center", marginTop: "50px" }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
-    <>
-      {isLoading ? (
-        <div>... Loading</div>
-      ) : (
-        <>
-          <Post
-            id={onePosts._id}
-            title={onePosts.title}
-            imageUrl={
-              onePosts.imageUrl &&
-              `${process.env.REACT_APP_URL}/${onePosts?.imageUrl}`
-            }
-            user={{
-              avatarUrl: `${process.env.REACT_APP_URL}/${onePosts?.user?.avatarUrl}`,
-              fullName: onePosts.user?.fullName,
+    <Container maxWidth="lg">
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              backgroundColor: "white",
+              padding: 3,
+              borderRadius: 2,
+              boxShadow: 3,
             }}
-            createdAt={moment(onePosts.createdAt).endOf("day").fromNow()}
-            viewsCount={onePosts.viewsCount}
-            commentsCount={onePosts.comments?.length}
-            tags={onePosts.tags}
-            isFullPost
           >
-            <ReactMarkdown children={onePosts.text} />
-          </Post>
+            <Post
+              id={onePosts._id}
+              title={onePosts.title}
+              imageUrl={
+                onePosts.imageUrl &&
+                `${process.env.REACT_APP_URL}/${onePosts?.imageUrl}`
+              }
+              user={{
+                avatarUrl: `${process.env.REACT_APP_URL}/${onePosts?.user?.avatarUrl}`,
+                fullName: onePosts.user?.fullName,
+              }}
+              createdAt={moment(onePosts.createdAt).endOf("day").fromNow()}
+              viewsCount={onePosts.viewsCount}
+              commentsCount={onePosts.comments?.length}
+              tags={onePosts.tags}
+              isFullPost
+            >
+              <Typography variant="h4" gutterBottom>
+                {onePosts.title}
+              </Typography>
+              <Typography variant="body1" paragraph>
+                <ReactMarkdown>{onePosts.text}</ReactMarkdown>
+              </Typography>
+            </Post>
+          </Box>
+        </Grid>
 
+        {/* Comments Section */}
+        <Grid item xs={12}>
           <CommentsBlock items={[onePosts]} isLoading={false}>
             <Index />
           </CommentsBlock>
-        </>
-      )}
-    </>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };

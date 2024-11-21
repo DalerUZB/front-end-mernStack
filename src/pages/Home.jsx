@@ -64,7 +64,7 @@ export const Home = () => {
           ) : (
             <Box
               sx={{
-                maxHeight: "70vh", // Container height to make it scrollable
+                maxHeight: "82.4vh", // Container height to make it scrollable
                 overflowY: "auto", // Vertical scroll
                 paddingRight: "10px", // Space for scrollbar
                 borderRadius: "8px", // Rounded corners

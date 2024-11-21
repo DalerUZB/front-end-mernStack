@@ -3,13 +3,13 @@ import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import SimpleMDE from "react-simplemde-editor";
-
 import "easymde/dist/easymde.min.css";
 import styles from "./AddPost.module.scss";
 import { selectIsAuth } from "../../redux/slices/auth";
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "../../axios/axios";
+import { Box, Container, Grid, Typography } from "@mui/material";
 
 export const AddPost = () => {
   const userData = useSelector((state) => state.auth.data);
@@ -41,7 +41,7 @@ export const AddPost = () => {
       setImageUrl(data.postFileUrl);
     } catch (error) {
       console.log(error);
-      alert("ошибка при загрузке файла!");
+      alert("Ошибка при загрузке файла!");
     }
   };
 
@@ -52,7 +52,7 @@ export const AddPost = () => {
   const onSubmit = async () => {
     try {
       setLoading(true);
-      const fileds = {
+      const fields = {
         title,
         text,
         tags,
@@ -61,15 +61,16 @@ export const AddPost = () => {
       };
 
       const { data } = isEditing
-        ? await axios.patch(`/posts/${id}`, fileds)
-        : await axios.post("/posts", fileds);
+        ? await axios.patch(`/posts/${id}`, fields)
+        : await axios.post("/posts", fields);
       const _id = isEditing ? id : data.post._id;
       navigate(`/posts/${_id}`);
     } catch (error) {
       console.log(error);
-      alert("ошибка при созданиыа стати!");
+      alert("Ошибка при создании статьи!");
     }
   };
+
   useEffect(() => {
     if (id) {
       axios
@@ -83,7 +84,7 @@ export const AddPost = () => {
         })
         .catch((err) => {
           console.warn(err);
-          alert("ошибка при получения стати");
+          alert("Ошибка при получении статьи");
         });
     }
   }, []);
@@ -91,7 +92,7 @@ export const AddPost = () => {
   const options = React.useMemo(
     () => ({
       spellChecker: false,
-      maxHeight: "400px",
+      maxHeight: "250px", // Bu yerda heightni qisqartirdik
       autofocus: true,
       placeholder: "Введите текст...",
       status: false,
@@ -102,86 +103,109 @@ export const AddPost = () => {
     }),
     []
   );
-  const isCheking = Boolean(userData?._id === getPosts.user?._id);
+
+  const isChecking = Boolean(userData?._id === getPosts.user?._id);
+
   if (!window.localStorage.getItem("token") && !isAuth) {
     return <Navigate to="/" />;
   }
 
   if (getPosts.user?._id !== undefined) {
-    if (!isCheking) {
+    if (!isChecking) {
       return <Navigate to="/" />;
     }
   }
-  return (
-    <Paper style={{ padding: 30 }}>
-      <Button
-        onClick={() => inputRef.current.click()}
-        variant="outlined"
-        size="large"
-      >
-        Загрузить превью
-      </Button>
-      <input
-        ref={inputRef}
-        type="file"
-        onChange={(event) => handleChangeFile(event)}
-        hidden
-      />
-      {imageUrl && (
-        <>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => onClickRemoveImage()}
-          >
-            Удалить
-          </Button>
-          <img
-            className={styles.image}
-            src={`${process.env.REACT_APP_URL}/${imageUrl}`}
-            alt="Uploaded"
-          />
-        </>
-      )}
 
-      <br />
-      <br />
-      <TextField
-        value={title}
-        classes={{ root: styles.title }}
-        onChange={(e) => setTitle(e.target.value)}
-        variant="standard"
-        placeholder="Заголовок статьи..."
-        fullWidth
-      />
-      <TextField
-        value={tags}
-        onChange={(e) => setTags(e.target.value)}
-        classes={{ root: styles.tags }}
-        variant="standard"
-        placeholder="Тэги"
-        fullWidth
-      />
-      <SimpleMDE
-        className={styles.editor}
-        value={text}
-        onChange={onChange}
-        options={options}
-      />
-      <div className={styles.buttons}>
+  return (
+    <Container maxWidth="sm">
+      <Paper sx={{ padding: 3, boxShadow: 3, borderRadius: 2 }}>
+        <Typography variant="h5" sx={{ marginBottom: 2 }}>
+          {isEditing ? "Редактировать статью" : "Создать новую статью"}
+        </Typography>
+
         <Button
-          onClick={() => {
-            onSubmit();
-          }}
+          onClick={() => inputRef.current.click()}
+          variant="outlined"
+          fullWidth
           size="large"
-          variant="contained"
         >
-          {isEditing ? "сохранить" : "Опубликовать"}
+          Загрузить превью
         </Button>
-        <a href="/">
-          <Button size="large">Отмена</Button>
-        </a>
-      </div>
-    </Paper>
+        <input
+          ref={inputRef}
+          type="file"
+          onChange={(event) => handleChangeFile(event)}
+          hidden
+        />
+        {imageUrl && (
+          <>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => onClickRemoveImage()}
+              sx={{ marginTop: 2 }}
+            >
+              Удалить
+            </Button>
+            <Box sx={{ marginTop: 2 }}>
+              <img
+                className={styles.image}
+                src={`${process.env.REACT_APP_URL}/${imageUrl}`}
+                alt="Uploaded"
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            </Box>
+          </>
+        )}
+
+        <TextField
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          variant="standard"
+          placeholder="Заголовок статьи..."
+          fullWidth
+          sx={{ marginTop: 2 }}
+        />
+
+        <TextField
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+          variant="standard"
+          placeholder="Тэги"
+          fullWidth
+          sx={{ marginTop: 2 }}
+        />
+
+        <SimpleMDE
+          className={styles.editor}
+          value={text}
+          onChange={onChange}
+          options={options}
+        />
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: 3,
+          }}
+        >
+          <Button
+            onClick={() => {
+              onSubmit();
+            }}
+            size="large"
+            variant="contained"
+            fullWidth
+            sx={{ marginRight: 2 }}
+          >
+            {isEditing ? "Сохранить" : "Опубликовать"}
+          </Button>
+          <Button size="large" variant="outlined" fullWidth href="/">
+            Отмена
+          </Button>
+        </Box>
+      </Paper>
+    </Container>
   );
 };

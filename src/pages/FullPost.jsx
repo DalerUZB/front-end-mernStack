@@ -80,7 +80,17 @@ export const FullPost = () => {
               <Typography variant="h4" gutterBottom>
                 {onePosts.title}
               </Typography>
-              <Typography variant="body1" paragraph>
+              <Typography
+                variant="body1"
+                paragraph
+                sx={{
+                  display: "block", // Kerakli joyni to'ldirish
+                  maxHeight: "none", // Balandlikni cheklamaysiz
+                  overflowY: "auto", // Pastga qarab skroll qilish imkoniyati
+                  height: "auto", // Kontentga mos ravishda balandlikni sozlash
+                  wordWrap: "break-word", // So'zlarni qisqartirish
+                }}
+              >
                 <ReactMarkdown>{onePosts.text}</ReactMarkdown>
               </Typography>
             </Post>
